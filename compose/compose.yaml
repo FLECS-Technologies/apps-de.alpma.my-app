@@ -1,0 +1,10 @@
+services:
+  app:
+    image: gcr.web.hok.ac.at/arnoldandreas/test-project-docker-registry:1.0.0
+    ports:
+      - "${WEB_UI:-5000}:5000"
+    volumes:
+      - todo-data:/data
+
+volumes:
+  todo-data:

@@ -1,0 +1,38 @@
+apiVersion: margo/v1alpha1
+kind: ApplicationDescription
+id: de-alpma-my-app
+metadata:
+  name: My App
+  version: "0.0.0" # overwritten by `bart`, this is just a placeholder
+  description: A brief description of what your app does.
+  catalog:
+    organization:
+      - name: ALPMA Alpenland Maschinenbau GmbH
+        site: https://alpma.de
+    application:
+      tagline: Your app tagline here.
+      icon: icon.png
+      releaseNotes: release-notes.md
+    author:
+      - name: Andreas Arnold
+        email: info@alpma.de
+deploymentProfiles:
+  - type: compose
+    id: default
+    components:
+      - name: default
+        properties:
+          repository: oci://flecs.azurecr.io/de.alpma.my-app # overwritten by `bart`, this is just a placeholder
+          revision: "0.0.0" # overwritten by `bart`, this is just a placeholder
+    requiredResources:
+      cpu:
+        cores: 1
+        architectures:
+          - amd64
+parameters:
+  WEB_UI:
+    value: "5000"
+    targets:
+      - pointer: WEB_UI
+        components:
+          - default
