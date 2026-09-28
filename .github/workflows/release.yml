@@ -1,0 +1,24 @@
+name: Release
+on:
+  release:
+    types: [published]
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: bart push
+        env:
+          BART_REGISTRY_USER: ${{ secrets.BART_REGISTRY_USER }}
+          BART_REGISTRY_TOKEN: ${{ secrets.BART_REGISTRY_TOKEN }}
+          BART_PULL_AUTH: gcr.web.hok.ac.at=${{ vars.PRIVATE_REGISTRY_USER }}:${{ secrets.PRIVATE_REGISTRY_PASSWORD }}
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/workspace" \
+            -w /workspace \
+            -e BART_REGISTRY_USER \
+            -e BART_REGISTRY_TOKEN \
+            -e BART_PULL_AUTH \
+            cr.flecs.tech/flecs/bart:latest \
+            push --version "${GITHUB_REF_NAME}"
